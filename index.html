@@ -9,26 +9,26 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { background: #f5f2ed !important; color: #2c3347 !important; font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
-  .container { max-width: 680px; margin: 0 auto; padding: 0 28px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 48px; }
   .screen { display: none; animation: fadeUp 0.5s ease; }
   .screen.active { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
+ 
   /* INTRO */
-  #screen-intro { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 80px 0; }
+  #screen-intro { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 40px 0; }
   #screen-intro.active { display: flex; }
-  .brand { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #8a8f9e; margin-bottom: 40px; }
-  .intro-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 8vw, 72px); font-weight: 300; line-height: 1.1; color: #2c3347; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .brand { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #8a8f9e; margin-bottom: 24px; }
+  .intro-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 56px); font-weight: 300; line-height: 1.1; color: #2c3347; margin-bottom: 12px; letter-spacing: -0.01em; }
   .intro-title em { font-style: italic; }
-  .intro-divider { width: 40px; height: 1px; background: #2c3347; margin: 32px 0; }
-  .intro-body { font-size: 16px; line-height: 1.85; color: #5a6070; max-width: 520px; margin-bottom: 32px; }
-  .wellbeing-note { font-size: 13px; line-height: 1.7; color: #9a9fa8; max-width: 520px; margin-bottom: 48px; padding: 16px 20px; border-left: 2px solid #ddd9d2; }
-  .intro-meta { display: flex; gap: 40px; margin-bottom: 56px; padding: 24px 0; border-top: 1px solid #ddd9d2; border-bottom: 1px solid #ddd9d2; }
-  .meta-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: #2c3347; line-height: 1; }
+  .intro-divider { width: 40px; height: 1px; background: #2c3347; margin: 20px 0; }
+  .intro-body { font-size: 15px; line-height: 1.75; color: #5a6070; max-width: 640px; margin-bottom: 20px; }
+  .wellbeing-note { font-size: 13px; line-height: 1.7; color: #9a9fa8; max-width: 640px; margin-bottom: 28px; padding: 12px 16px; border-left: 2px solid #ddd9d2; }
+  .intro-meta { display: flex; gap: 40px; margin-bottom: 32px; padding: 20px 0; border-top: 1px solid #ddd9d2; border-bottom: 1px solid #ddd9d2; }
+  .meta-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: #2c3347; line-height: 1; }
   .meta-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #9a9fa8; margin-top: 4px; }
-  .btn-primary { display: inline-block; background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 18px 48px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+  .btn-primary { display: inline-block; background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px 48px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
   .btn-primary:hover { background: #3d4560; }
-
+ 
   /* QUIZ */
   #screen-quiz { padding: 64px 0 100px; }
   .progress-wrap { margin-bottom: 64px; }
@@ -51,7 +51,7 @@
   .btn-next { background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 36px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
   .btn-next:hover { background: #3d4560; }
   .btn-next:disabled { opacity: 0.25; cursor: not-allowed; }
-
+ 
   /* EMAIL */
   #screen-email { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 80px 0; }
   #screen-email.active { display: flex; }
@@ -68,7 +68,7 @@
   .btn-submit:hover { background: #3d4560; }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
   .submit-error { font-size: 13px; color: #7a2e2e; margin-top: 12px; display: none; }
-
+ 
   /* RESULTS */
   #screen-result { padding: 80px 0 100px; }
   .result-brand { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #9a9fa8; margin-bottom: 56px; }
@@ -102,7 +102,7 @@
 </head>
 <body>
 <div class="container">
-
+ 
   <!-- INTRO -->
   <div id="screen-intro" class="screen active">
     <div class="brand">Beta Mind Lab</div>
@@ -117,7 +117,7 @@
     </div>
     <button class="btn-primary" onclick="startQuiz()">Begin Assessment</button>
   </div>
-
+ 
   <!-- QUIZ -->
   <div id="screen-quiz" class="screen">
     <div class="progress-wrap">
@@ -136,7 +136,7 @@
       <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Next →</button>
     </div>
   </div>
-
+ 
   <!-- EMAIL -->
   <div id="screen-email" class="screen">
     <div class="brand">Beta Mind Lab</div>
@@ -154,7 +154,7 @@
     <button class="btn-submit" id="btn-submit" onclick="submitEmail()">Show Me My Results →</button>
     <p class="submit-error" id="submit-error">Something went wrong. Please try again.</p>
   </div>
-
+ 
   <!-- RESULTS -->
   <div id="screen-result" class="screen">
     <div class="result-brand">Beta Mind Lab — Psychological Immunity Score</div>
@@ -170,11 +170,11 @@
     <div class="dimensions" id="dim-bars"></div>
     <button class="retake-btn" onclick="retakeQuiz()">Retake Assessment</button>
   </div>
-
+ 
 </div>
 <script>
 const FORMSPREE_URL = 'https://formspree.io/f/mvzvjwqk';
-
+ 
 const questions = [
   { dim:'Bounce-Back Speed', dimKey:'bounce',
     text:'After a poor performance, how long does it typically take you to feel mentally ready to try again?',
@@ -257,7 +257,7 @@ const questions = [
       {label:'Confirmation that it\'s going to go wrong', score:1}
     ]},
 ];
-
+ 
 const dimDefs = [
   { key:'bounce',    label:'Bounce-Back Speed',            desc:'How quickly you recover mentally after a setback, mistake, or poor session. The faster your recovery, the less each setback costs you — and the more consistently you can perform.' },
   { key:'selfworth', label:'Self-Worth Independence',       desc:'How much your sense of who you are depends on what you achieve. When self-worth is independent of outcome, pressure loses its grip and performance becomes a lot freer.' },
@@ -265,7 +265,7 @@ const dimDefs = [
   { key:'pressure',  label:'Pressure & Outcome Detachment', desc:'How well you stay present and process-focused when the stakes feel high. The ability to detach from outcome under pressure is what separates consistent performers from those who only perform well when it feels safe.' },
   { key:'threat',    label:'Threat Response',               desc:'How your mind and body respond when the outcome is uncertain. This dimension looks at whether uncertainty triggers contraction and avoidance, or whether you can stay open, present, and moving freely through it.' },
 ];
-
+ 
 const tiers = [
   { name:'Unified',
     desc:'<strong>Your Psychological Immunity Score puts you in the Unified range — fully integrated, and operating from the strongest possible mental foundation.</strong> When mind and body are unified, psychological immunity looks like this — setbacks land, you feel them, and you move through them without it costing you much. You\'ve built a mental foundation that doesn\'t depend on the outcome to stay intact. Your sense of who you are doesn\'t live in what you achieve, and that\'s what allows you to be fully present when it matters most. That kind of resilience — the ability to absorb, recover, and return without losing yourself in the process — is rare. The work now is sustaining it under increasing pressure and continuing to refine what\'s already working.',
@@ -280,12 +280,12 @@ const tiers = [
     desc:'<strong>Your Psychological Immunity Score puts you in the Contracting range — your system is operating from protection mode.</strong> When you\'re contracting, psychological immunity is low and the system is in protection mode. Uncertainty feels threatening, setbacks feel significant, and the dominant response is to brace, withdraw, or avoid rather than approach. That pattern shows up in movement, in decision-making, and in how long it takes to mentally recover after a hard session. This isn\'t a reflection of your potential. It\'s a sign that the foundation needs building — and resilience, like any other skill, can be trained. The athletes who do this work don\'t just perform better. They enjoy it more.',
     rec:'A year from now, without support, the pattern tends to deepen — the wall feels harder, the stakes feel higher, and the enjoyment quietly drains out of something you started because you loved it. This is the tier where the right support makes the biggest difference, and the biggest mistake is waiting. A free 30-minute discovery call isn\'t a commitment to anything. It\'s just a conversation about where you are and what might help. That\'s the right place to start.' },
 ];
-
+ 
 const TOTAL = questions.length;
 let current = 0;
 let answers = new Array(TOTAL).fill(null);
 let shuffledOptions = [];
-
+ 
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -294,19 +294,19 @@ function shuffle(arr) {
   }
   return a;
 }
-
+ 
 function startQuiz() {
   shuffledOptions = questions.map(q => shuffle(q.options));
   showScreen('screen-quiz');
   renderQ();
 }
-
+ 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
-
+ 
 function renderQ() {
   const q = questions[current];
   const opts = shuffledOptions[current];
@@ -317,7 +317,7 @@ function renderQ() {
   document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
   document.getElementById('btn-next').textContent = current === TOTAL-1 ? 'See My Results →' : 'Next →';
   document.getElementById('btn-next').disabled = answers[current] === null;
-
+ 
   const letters = ['a','b','c','d'];
   const grid = document.getElementById('options-grid');
   grid.innerHTML = '';
@@ -330,21 +330,21 @@ function renderQ() {
     grid.appendChild(btn);
   });
 }
-
+ 
 function selectOption(idx) {
   answers[current] = idx;
   document.querySelectorAll('.option-btn').forEach((b,i) => b.classList.toggle('selected', i===idx));
   document.getElementById('btn-next').disabled = false;
 }
-
+ 
 function nextQ() {
   if (answers[current] === null) return;
   if (current < TOTAL-1) { current++; renderQ(); }
   else { showScreen('screen-email'); }
 }
-
+ 
 function prevQ() { if (current > 0) { current--; renderQ(); } }
-
+ 
 function calcResults() {
   let total = 0;
   let ds = {bounce:0, selfworth:0, mistake:0, pressure:0, threat:0};
@@ -363,26 +363,26 @@ function calcResults() {
   else tier = tiers[3];
   return { pct, tier, ds, dc };
 }
-
+ 
 async function submitEmail() {
   const name = document.getElementById('input-name').value.trim();
   const email = document.getElementById('input-email').value.trim();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!name) { alert('Please enter your name.'); return; }
   if (!email || !emailRegex.test(email)) { alert('Please enter a valid email address.'); return; }
-
+ 
   const { pct, tier, ds, dc } = calcResults();
-
+ 
   const dimSummary = dimDefs.map(d => {
     const p = Math.round(ds[d.key] / (dc[d.key] * 4) * 100);
     const lbl = p >= 65 ? 'Strong' : p >= 40 ? 'Building' : 'Needs Work';
     return `${d.label}: ${lbl} (${p}%)`;
   }).join('\n');
-
+ 
   const btn = document.getElementById('btn-submit');
   btn.disabled = true;
   btn.textContent = 'Loading...';
-
+ 
   try {
     const res = await fetch(FORMSPREE_URL, {
       method: 'POST',
@@ -397,7 +397,7 @@ async function submitEmail() {
         _subject: `New Quiz Result — ${tier.name} | ${name}`,
       })
     });
-
+ 
     if (res.ok) {
       showResults(tier, ds, dc);
     } else {
@@ -409,15 +409,15 @@ async function submitEmail() {
     document.getElementById('submit-error').style.display = 'block';
   }
 }
-
+ 
 function getClass(p) { return p >= 65 ? 'strong' : p >= 40 ? 'building' : 'needs-work'; }
 function getLabel(p) { return p >= 65 ? 'Strong' : p >= 40 ? 'Building' : 'Needs Work'; }
-
+ 
 function showResults(tier, ds, dc) {
   document.getElementById('res-tier').textContent = tier.name;
   document.getElementById('res-desc').innerHTML = tier.desc;
   document.getElementById('rec-text').textContent = tier.rec;
-
+ 
   const dbEl = document.getElementById('dim-bars');
   dbEl.innerHTML = '';
   dimDefs.forEach(d => {
@@ -435,13 +435,13 @@ function showResults(tier, ds, dc) {
       <div class="dim-track"><div class="dim-fill ${cls}" data-target="${p}"></div></div>`;
     dbEl.appendChild(row);
   });
-
+ 
   showScreen('screen-result');
   setTimeout(() => {
     document.querySelectorAll('.dim-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
   }, 200);
 }
-
+ 
 function retakeQuiz() {
   current = 0;
   answers = new Array(TOTAL).fill(null);
