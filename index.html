@@ -453,13 +453,17 @@ function retakeQuiz() {
 }
 
 function sendHeight() {
-  const height = document.body.scrollHeight + 40;
+  const height = document.body.scrollHeight + 100;
   window.parent.postMessage({ height: height }, '*');
 }
 
 const resizeObserver = new ResizeObserver(() => sendHeight());
 resizeObserver.observe(document.body);
-window.addEventListener('load', sendHeight);
+window.addEventListener('load', function() {
+  sendHeight();
+  setTimeout(sendHeight, 300);
+  setTimeout(sendHeight, 800);
+});
 </script>
 </body>
 </html>
