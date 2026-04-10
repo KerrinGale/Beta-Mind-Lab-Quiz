@@ -15,7 +15,7 @@
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
  
   /* INTRO */
-  #screen-intro { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 48px 0; }
+  #screen-intro { display: none; flex-direction: column; justify-content: flex-start; padding: 64px 0 48px; }
   #screen-intro.active { display: flex; }
   .brand { display: none; }
   .intro-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4.5vw, 64px); font-weight: 300; line-height: 1.05; color: #2c3347; margin-bottom: 36px; letter-spacing: -0.01em; white-space: nowrap; }
@@ -451,6 +451,15 @@ function retakeQuiz() {
   document.getElementById('submit-error').style.display = 'none';
   showScreen('screen-intro');
 }
+ 
+function sendHeight() {
+  const height = document.body.scrollHeight;
+  window.parent.postMessage({ height: height }, '*');
+}
+ 
+const resizeObserver = new ResizeObserver(() => sendHeight());
+resizeObserver.observe(document.body);
+window.addEventListener('load', sendHeight);
 </script>
 </body>
 </html>
