@@ -15,18 +15,18 @@
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
  
   /* INTRO */
-  #screen-intro { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 40px 0; }
+  #screen-intro { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 48px 0; }
   #screen-intro.active { display: flex; }
-  .brand { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #8a8f9e; margin-bottom: 24px; }
-  .intro-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 56px); font-weight: 300; line-height: 1.1; color: #2c3347; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .brand { display: none; }
+  .intro-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4.5vw, 64px); font-weight: 300; line-height: 1.05; color: #2c3347; margin-bottom: 36px; letter-spacing: -0.01em; white-space: nowrap; }
   .intro-title em { font-style: italic; }
-  .intro-divider { width: 40px; height: 1px; background: #2c3347; margin: 20px 0; }
-  .intro-body { font-size: 15px; line-height: 1.75; color: #5a6070; max-width: 640px; margin-bottom: 20px; }
-  .wellbeing-note { font-size: 13px; line-height: 1.7; color: #9a9fa8; max-width: 640px; margin-bottom: 28px; padding: 12px 16px; border-left: 2px solid #ddd9d2; }
-  .intro-meta { display: flex; gap: 40px; margin-bottom: 32px; padding: 20px 0; border-top: 1px solid #ddd9d2; border-bottom: 1px solid #ddd9d2; }
-  .meta-num { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: #2c3347; line-height: 1; }
+  .intro-divider { display: none; }
+  .intro-body { font-size: 17px; line-height: 1.85; color: #5a6070; max-width: 100%; margin-bottom: 36px; }
+  .wellbeing-note { font-size: 13px; line-height: 1.7; color: #b0b5be; max-width: 100%; margin-top: 24px; border: none; padding: 0; }
+  .intro-meta { display: flex; gap: 40px; margin-bottom: 36px; padding: 24px 0; border-top: 1px solid #ddd9d2; border-bottom: 1px solid #ddd9d2; }
+  .meta-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: #2c3347; line-height: 1; }
   .meta-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #9a9fa8; margin-top: 4px; }
-  .btn-primary { display: inline-block; background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px 48px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+  .btn-primary { display: block; width: 100%; background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 18px 48px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; text-align: center; }
   .btn-primary:hover { background: #3d4560; }
  
   /* QUIZ */
@@ -105,17 +105,15 @@
  
   <!-- INTRO -->
   <div id="screen-intro" class="screen active">
-    <div class="brand">Beta Mind Lab</div>
-    <h1 class="intro-title">Your Psychological<br><em>Immunity Score</em></h1>
-    <div class="intro-divider"></div>
+    <h1 class="intro-title">Your Psychological <em>Immunity Score</em></h1>
     <p class="intro-body">Every climber trains their body. The best train their mind too.<br><br>How freely you move, how you perform when it matters, how you bounce back when it doesn't go to plan — these are trainable mental skills. Yet psychological performance is the most overlooked part of climbing training.<br><br>This assessment gives you a clear picture of where your mental game is already strong, and where there's room to build.</p>
-    <p class="wellbeing-note">If any of these questions bring up difficult feelings, please seek support from a qualified professional.</p>
     <div class="intro-meta">
       <div class="meta-item"><div class="meta-num">10</div><div class="meta-label">Questions</div></div>
       <div class="meta-item"><div class="meta-num">5</div><div class="meta-label">Dimensions</div></div>
       <div class="meta-item"><div class="meta-num">3</div><div class="meta-label">Minutes</div></div>
     </div>
-    <button class="btn-primary" onclick="startQuiz()">Begin Assessment</button>
+    <button class="btn-primary" onclick="startQuiz()">Begin</button>
+    <p class="wellbeing-note">If any of these questions bring up difficult feelings, please seek support from a qualified professional.</p>
   </div>
  
   <!-- QUIZ -->
