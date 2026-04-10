@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Psychological Immunity Score | Beta Mind Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #f5f2ed !important; color: #2c3347 !important; font-family: 'DM Sans', sans-serif; font-weight: 300; min-height: 100vh; overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+  .container { max-width: 680px; margin: 0 auto; padding: 0 28px; }
+  .screen { display: none; animation: fadeUp 0.5s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* INTRO */
+  #screen-intro { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 80px 0; }
+  #screen-intro.active { display: flex; }
+  .brand { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #8a8f9e; margin-bottom: 40px; }
+  .intro-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 8vw, 72px); font-weight: 300; line-height: 1.1; color: #2c3347; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .intro-title em { font-style: italic; }
+  .intro-divider { width: 40px; height: 1px; background: #2c3347; margin: 32px 0; }
+  .intro-body { font-size: 16px; line-height: 1.85; color: #5a6070; max-width: 520px; margin-bottom: 32px; }
+  .wellbeing-note { font-size: 13px; line-height: 1.7; color: #9a9fa8; max-width: 520px; margin-bottom: 48px; padding: 16px 20px; border-left: 2px solid #ddd9d2; }
+  .intro-meta { display: flex; gap: 40px; margin-bottom: 56px; padding: 24px 0; border-top: 1px solid #ddd9d2; border-bottom: 1px solid #ddd9d2; }
+  .meta-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; color: #2c3347; line-height: 1; }
+  .meta-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #9a9fa8; margin-top: 4px; }
+  .btn-primary { display: inline-block; background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 18px 48px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: #3d4560; }
+
+  /* QUIZ */
+  #screen-quiz { padding: 64px 0 100px; }
+  .progress-wrap { margin-bottom: 64px; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .progress-dim { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: #9a9fa8; }
+  .progress-count { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #9a9fa8; }
+  .progress-track { height: 1px; background: #ddd9d2; }
+  .progress-fill { height: 100%; background: #2c3347; transition: width 0.4s ease; }
+  .q-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 400; line-height: 1.25; color: #2c3347; margin-bottom: 40px; letter-spacing: -0.01em; }
+  .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 48px; }
+  .option-btn { background: #ffffff; border: 1px solid #ddd9d2; color: #2c3347; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300; padding: 18px 20px; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s; display: flex; align-items: flex-start; gap: 16px; border-radius: 4px; line-height: 1.5; }
+  .option-btn:hover { border-color: #2c3347; background: #faf8f5; }
+  .option-btn.selected { border-color: #2c3347; background: #2c3347; color: #f5f2ed; }
+  .option-btn.selected .opt-letter { color: rgba(245,242,237,0.4); }
+  .opt-letter { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: #9a9fa8; min-width: 16px; padding-top: 1px; flex-shrink: 0; transition: color 0.2s; }
+  .opt-text { flex: 1; }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; }
+  .btn-back { background: transparent; border: 1px solid #ddd9d2; color: #9a9fa8; font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 24px; cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+  .btn-back:hover { color: #2c3347; border-color: #2c3347; }
+  .btn-next { background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 36px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+  .btn-next:hover { background: #3d4560; }
+  .btn-next:disabled { opacity: 0.25; cursor: not-allowed; }
+
+  /* EMAIL */
+  #screen-email { min-height: 100vh; display: none; flex-direction: column; justify-content: center; padding: 80px 0; }
+  #screen-email.active { display: flex; }
+  .email-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 6vw, 56px); font-weight: 300; line-height: 1.15; color: #2c3347; margin-bottom: 16px; }
+  .email-title em { font-style: italic; }
+  .email-body { font-size: 16px; line-height: 1.85; color: #5a6070; max-width: 480px; margin-bottom: 8px; }
+  .email-note { font-size: 13px; color: #9a9fa8; margin-bottom: 40px; line-height: 1.6; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #9a9fa8; margin-bottom: 8px; }
+  .form-group input { width: 100%; background: #ffffff; border: 1px solid #ddd9d2; color: #2c3347; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 300; padding: 16px 18px; border-radius: 4px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  .form-group input:focus { border-color: #2c3347; }
+  .form-group input::placeholder { color: #c0bdb8; }
+  .btn-submit { display: block; width: 100%; background: #2c3347; color: #f5f2ed; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; padding: 18px; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+  .btn-submit:hover { background: #3d4560; }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .submit-error { font-size: 13px; color: #7a2e2e; margin-top: 12px; display: none; }
+
+  /* RESULTS */
+  #screen-result { padding: 80px 0 100px; }
+  .result-brand { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #9a9fa8; margin-bottom: 56px; }
+  .tier-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 10vw, 88px); font-weight: 300; font-style: italic; color: #2c3347; line-height: 1; margin-bottom: 48px; }
+  .tier-desc { font-size: 16px; line-height: 1.85; color: #5a6070; margin-bottom: 48px; }
+  .tier-desc strong { color: #2c3347; font-weight: 400; display: block; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.4; }
+  .rec-box { background: #2c3347; padding: 40px; border-radius: 4px; margin-bottom: 64px; }
+  .rec-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,242,237,0.4); margin-bottom: 20px; }
+  .rec-text { font-size: 16px; line-height: 1.85; color: rgba(245,242,237,0.8); margin-bottom: 32px; }
+  .btn-cta { display: inline-block; background: #f5f2ed; color: #2c3347; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px 36px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+  .btn-cta:hover { background: #ffffff; }
+  .result-divider { width: 40px; height: 1px; background: #ddd9d2; margin: 0 0 48px 0; }
+  .section-label { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #9a9fa8; margin-bottom: 36px; }
+  .dimensions { margin-bottom: 64px; }
+  .dim-row { margin-bottom: 28px; }
+  .dim-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .dim-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: #2c3347; }
+  .dim-label-tag { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .dim-label-tag.strong { color: #4a7c3f; }
+  .dim-label-tag.building { color: #8a5a1a; }
+  .dim-label-tag.needs-work { color: #7a2e2e; }
+  .dim-desc { font-size: 13px; line-height: 1.7; color: #9a9fa8; margin-bottom: 10px; }
+  .dim-track { height: 6px; background: #e8e5df; border-radius: 4px; overflow: hidden; }
+  .dim-fill { height: 100%; border-radius: 4px; width: 0%; transition: width 1.2s ease 0.3s; }
+  .dim-fill.strong { background: #B7D47A; }
+  .dim-fill.building { background: #E8A870; }
+  .dim-fill.needs-work { background: #D98080; }
+  .retake-btn { display: block; margin: 0 auto; background: transparent; border: 1px solid #ddd9d2; color: #9a9fa8; font-family: 'DM Sans', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 32px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+  .retake-btn:hover { color: #2c3347; border-color: #2c3347; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen active">
+    <div class="brand">Beta Mind Lab</div>
+    <h1 class="intro-title">Your Psychological<br><em>Immunity Score</em></h1>
+    <div class="intro-divider"></div>
+    <p class="intro-body">Every climber trains their body. The best train their mind too.<br><br>How freely you move, how you perform when it matters, how you bounce back when it doesn't go to plan — these are trainable mental skills. Yet psychological performance is the most overlooked part of climbing training.<br><br>This assessment gives you a clear picture of where your mental game is already strong, and where there's room to build.</p>
+    <p class="wellbeing-note">If any of these questions bring up difficult feelings, please seek support from a qualified professional.</p>
+    <div class="intro-meta">
+      <div class="meta-item"><div class="meta-num">10</div><div class="meta-label">Questions</div></div>
+      <div class="meta-item"><div class="meta-num">5</div><div class="meta-label">Dimensions</div></div>
+      <div class="meta-item"><div class="meta-num">3</div><div class="meta-label">Minutes</div></div>
+    </div>
+    <button class="btn-primary" onclick="startQuiz()">Begin Assessment</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-dim" id="q-dim"></span>
+        <span class="progress-count" id="q-count">1 / 10</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options-grid" id="options-grid"></div>
+    <div class="nav-row">
+      <button class="btn-back" id="btn-back" onclick="prevQ()">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- EMAIL -->
+  <div id="screen-email" class="screen">
+    <div class="brand">Beta Mind Lab</div>
+    <h2 class="email-title">Your results<br><em>are ready.</em></h2>
+    <p class="email-body">Drop your details below to see where you landed across the five dimensions and what it means for your mental game.</p>
+    <p class="email-note">We don't do spam. Just occasional useful content for athletes who take their mental game seriously.</p>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="input-name" placeholder="Your full name" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="input-email" placeholder="your@email.com" autocomplete="email">
+    </div>
+    <button class="btn-submit" id="btn-submit" onclick="submitEmail()">Show Me My Results →</button>
+    <p class="submit-error" id="submit-error">Something went wrong. Please try again.</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-result" class="screen">
+    <div class="result-brand">Beta Mind Lab — Psychological Immunity Score</div>
+    <div class="tier-name" id="res-tier"></div>
+    <div class="tier-desc" id="res-desc"></div>
+    <div class="rec-box">
+      <div class="rec-label">Your Next Step</div>
+      <div class="rec-text" id="rec-text"></div>
+      <a href="https://www.betamindlab.com/contact" class="btn-cta" target="_blank">Book a Free Discovery Call</a>
+    </div>
+    <div class="result-divider"></div>
+    <div class="section-label">Your Breakdown by Dimension</div>
+    <div class="dimensions" id="dim-bars"></div>
+    <button class="retake-btn" onclick="retakeQuiz()">Retake Assessment</button>
+  </div>
+
+</div>
+<script>
+const FORMSPREE_URL = 'https://formspree.io/f/mvzvjwqk';
+
+const questions = [
+  { dim:'Bounce-Back Speed', dimKey:'bounce',
+    text:'After a poor performance, how long does it typically take you to feel mentally ready to try again?',
+    options:[
+      {label:'I shake it off mid-session and keep going', score:4},
+      {label:'A few hours — I process it, then move on', score:3},
+      {label:'A day or two before I feel like myself again', score:2},
+      {label:'It can linger and affect my mood and motivation for weeks', score:1}
+    ]},
+  { dim:'Bounce-Back Speed', dimKey:'bounce',
+    text:'How do you approach the next try after a failed attempt?',
+    options:[
+      {label:'Calm and neutral — I\'ve processed it and I\'m ready', score:4},
+      {label:'Focused and determined to correct what went wrong', score:3},
+      {label:'Anxious — I\'m still carrying some of the previous attempt', score:2},
+      {label:'Dreading it — worried I\'ll repeat the same outcome', score:1}
+    ]},
+  { dim:'Self-Worth Independence', dimKey:'selfworth',
+    text:'When you don\'t achieve what you set out to on a climb, how much does it affect how you feel about yourself as a person?',
+    options:[
+      {label:'Not much — I separate my performance from who I am', score:4},
+      {label:'A little — I feel it briefly but recover quickly', score:3},
+      {label:'Quite a bit — it\'s hard not to feel like a failure', score:2},
+      {label:'Completely — what I achieve on the wall defines my worth', score:1}
+    ]},
+  { dim:'Self-Worth Independence', dimKey:'selfworth',
+    text:'How often do you use grades, sends, or progress to measure your value as a person?',
+    options:[
+      {label:'Rarely — I use effort and process as my measure', score:4},
+      {label:'Sometimes, but I can catch myself and reframe', score:3},
+      {label:'Often — what I\'m climbing is how I know I\'m enough', score:2},
+      {label:'Always — it\'s automatic and I can\'t seem to stop it', score:1}
+    ]},
+  { dim:'Mistake Response', dimKey:'mistake',
+    text:'After a mistake — rushing a move, a poor decision, letting hesitation take over — how do you typically respond?',
+    options:[
+      {label:'I talk to myself the way I\'d talk to a climbing partner I care about — then move on', score:4},
+      {label:'I\'m critical in the moment, but I can refocus', score:3},
+      {label:'I replay it, talk harshly to myself, and it affects the rest of my session', score:2},
+      {label:'I spiral — the self-criticism is hard to stop and it lingers long after', score:1}
+    ]},
+  { dim:'Mistake Response', dimKey:'mistake',
+    text:'In your mind, one mistake means:',
+    options:[
+      {label:'Data. Something to learn from and move on — nothing more', score:4},
+      {label:'A speed bump — it stings, but I keep perspective', score:3},
+      {label:'Evidence that something is seriously wrong with my climbing', score:2},
+      {label:'Proof I\'m not good enough — and now everyone can see it', score:1}
+    ]},
+  { dim:'Pressure & Outcome Detachment', dimKey:'pressure',
+    text:'Before a high-stakes moment, where does your focus naturally go?',
+    options:[
+      {label:'My movement, my breath, what I\'m doing right now', score:4},
+      {label:'Mostly process — with some outcome thoughts I can manage', score:3},
+      {label:'The result — what could go wrong, what others will think', score:2},
+      {label:'Everything that could go badly — the spiral is hard to stop', score:1}
+    ]},
+  { dim:'Pressure & Outcome Detachment', dimKey:'pressure',
+    text:'When you know others are watching or might be forming an opinion of you, your anxiety level:',
+    options:[
+      {label:'Barely changes — I climb for myself regardless of who\'s there', score:4},
+      {label:'Rises a little — I notice it but it doesn\'t take over', score:3},
+      {label:'Rises significantly — being judged really affects how I perform', score:2},
+      {label:'Spikes hard — the fear of looking bad can shut me down entirely', score:1}
+    ]},
+  { dim:'Threat Response', dimKey:'threat',
+    text:'When the outcome is uncertain, what happens to your body and movement?',
+    options:[
+      {label:'I feel something shift, acknowledge it, and my movement stays relatively free', score:4},
+      {label:'I tighten up a little but can breathe through it and keep going', score:3},
+      {label:'I notice real tension, hesitation, or over-gripping that affects how I climb', score:2},
+      {label:'I shut down or pull back — my body stops cooperating entirely', score:1}
+    ]},
+  { dim:'Threat Response', dimKey:'threat',
+    text:'When you feel that hesitation or unease in your body, you tend to read it as:',
+    options:[
+      {label:'Useful information — a signal to pay attention, not a reason to stop', score:4},
+      {label:'Uncomfortable, but something I know how to work with', score:3},
+      {label:'A sign I probably shouldn\'t be attempting this right now', score:2},
+      {label:'Confirmation that it\'s going to go wrong', score:1}
+    ]},
+];
+
+const dimDefs = [
+  { key:'bounce',    label:'Bounce-Back Speed',            desc:'How quickly you recover mentally after a setback, mistake, or poor session. The faster your recovery, the less each setback costs you — and the more consistently you can perform.' },
+  { key:'selfworth', label:'Self-Worth Independence',       desc:'How much your sense of who you are depends on what you achieve. When self-worth is independent of outcome, pressure loses its grip and performance becomes a lot freer.' },
+  { key:'mistake',   label:'Mistake Response',              desc:'How you process and respond to errors in the moment and after. Your relationship with mistakes is one of the strongest predictors of whether setbacks make you better or keep you stuck.' },
+  { key:'pressure',  label:'Pressure & Outcome Detachment', desc:'How well you stay present and process-focused when the stakes feel high. The ability to detach from outcome under pressure is what separates consistent performers from those who only perform well when it feels safe.' },
+  { key:'threat',    label:'Threat Response',               desc:'How your mind and body respond when the outcome is uncertain. This dimension looks at whether uncertainty triggers contraction and avoidance, or whether you can stay open, present, and moving freely through it.' },
+];
+
+const tiers = [
+  { name:'Unified',
+    desc:'<strong>Your Psychological Immunity Score puts you in the Unified range — fully integrated, and operating from the strongest possible mental foundation.</strong> When mind and body are unified, psychological immunity looks like this — setbacks land, you feel them, and you move through them without it costing you much. You\'ve built a mental foundation that doesn\'t depend on the outcome to stay intact. Your sense of who you are doesn\'t live in what you achieve, and that\'s what allows you to be fully present when it matters most. That kind of resilience — the ability to absorb, recover, and return without losing yourself in the process — is rare. The work now is sustaining it under increasing pressure and continuing to refine what\'s already working.',
+    rec:'You\'re in a strong place mentally — and that\'s worth protecting. The athletes who don\'t tend to find that without the right support, old patterns quietly creep back in under increasing pressure. The next step is working with someone who can help you sustain and refine what you\'ve built and push it further. A free 30-minute discovery call is the place to start that conversation.' },
+  { name:'Fragmenting',
+    desc:'<strong>Your Psychological Immunity Score puts you in the Fragmenting range — capable and developing, but not yet consistent.</strong> When you\'re fragmenting, psychological immunity is present but not yet reliable. You have genuine mental resilience — you recover, you reset, and there are real moments of clarity and freedom. But under pressure or after a setback, something shifts. Attention leaks toward the outcome, self-doubt creeps in, and full presence starts to slip. The gap between your best performances and your average ones is largely a mental recovery question — how quickly can you bring yourself back when things start to fragment? That gap is closeable, and closer than you might think.',
+    rec:'You\'re closer than you think to a more consistent mental game. But without addressing what\'s causing the fragmentation, the gap between your best performances and your average ones stays exactly where it is — or widens as the stakes get higher. A single conversation can help clarify exactly where the leaks are and what would close them fastest.' },
+  { name:'Fractured',
+    desc:'<strong>Your Psychological Immunity Score puts you in the Fractured range — working hard, but the foundation needs attention.</strong> When things are fractured, psychological immunity is fragile. You know what it feels like to perform well — but you also know how quickly that can disappear. Your mind and body are working against each other more than they\'re working together. Mistakes land hard, mental recovery is slow, and there are moments where your physical ability is ahead of what your psychological foundation will allow. This isn\'t about effort or commitment. It\'s about building the resilience underneath the performance so that what you\'re capable of can actually show up consistently.',
+    rec:'Your physical ability is ahead of your psychological foundation right now — and that gap is costing you performances you\'ve already earned. Left unaddressed it doesn\'t tend to close on its own. Most athletes at this level just work harder physically, which widens the gap further. Book a free 30-minute discovery call and let\'s talk about what building that foundation actually looks like for you specifically.' },
+  { name:'Contracting',
+    desc:'<strong>Your Psychological Immunity Score puts you in the Contracting range — your system is operating from protection mode.</strong> When you\'re contracting, psychological immunity is low and the system is in protection mode. Uncertainty feels threatening, setbacks feel significant, and the dominant response is to brace, withdraw, or avoid rather than approach. That pattern shows up in movement, in decision-making, and in how long it takes to mentally recover after a hard session. This isn\'t a reflection of your potential. It\'s a sign that the foundation needs building — and resilience, like any other skill, can be trained. The athletes who do this work don\'t just perform better. They enjoy it more.',
+    rec:'A year from now, without support, the pattern tends to deepen — the wall feels harder, the stakes feel higher, and the enjoyment quietly drains out of something you started because you loved it. This is the tier where the right support makes the biggest difference, and the biggest mistake is waiting. A free 30-minute discovery call isn\'t a commitment to anything. It\'s just a conversation about where you are and what might help. That\'s the right place to start.' },
+];
+
+const TOTAL = questions.length;
+let current = 0;
+let answers = new Array(TOTAL).fill(null);
+let shuffledOptions = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  shuffledOptions = questions.map(q => shuffle(q.options));
+  showScreen('screen-quiz');
+  renderQ();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderQ() {
+  const q = questions[current];
+  const opts = shuffledOptions[current];
+  document.getElementById('progress-fill').style.width = (current / TOTAL * 100) + '%';
+  document.getElementById('q-count').textContent = (current+1) + ' / ' + TOTAL;
+  document.getElementById('q-dim').textContent = q.dim;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = current === TOTAL-1 ? 'See My Results →' : 'Next →';
+  document.getElementById('btn-next').disabled = answers[current] === null;
+
+  const letters = ['a','b','c','d'];
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    const isSelected = answers[current] !== null && shuffledOptions[current][answers[current]] === opt;
+    btn.className = 'option-btn' + (isSelected ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span class="opt-text">${opt.label}</span>`;
+    btn.onclick = () => selectOption(i);
+    grid.appendChild(btn);
+  });
+}
+
+function selectOption(idx) {
+  answers[current] = idx;
+  document.querySelectorAll('.option-btn').forEach((b,i) => b.classList.toggle('selected', i===idx));
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQ() {
+  if (answers[current] === null) return;
+  if (current < TOTAL-1) { current++; renderQ(); }
+  else { showScreen('screen-email'); }
+}
+
+function prevQ() { if (current > 0) { current--; renderQ(); } }
+
+function calcResults() {
+  let total = 0;
+  let ds = {bounce:0, selfworth:0, mistake:0, pressure:0, threat:0};
+  let dc = {bounce:0, selfworth:0, mistake:0, pressure:0, threat:0};
+  questions.forEach((q,i) => {
+    const s = shuffledOptions[i][answers[i]].score;
+    total += s;
+    ds[q.dimKey] += s;
+    dc[q.dimKey]++;
+  });
+  const pct = Math.round(total / (TOTAL * 4) * 100);
+  let tier;
+  if (pct >= 80) tier = tiers[0];
+  else if (pct >= 60) tier = tiers[1];
+  else if (pct >= 40) tier = tiers[2];
+  else tier = tiers[3];
+  return { pct, tier, ds, dc };
+}
+
+async function submitEmail() {
+  const name = document.getElementById('input-name').value.trim();
+  const email = document.getElementById('input-email').value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!name) { alert('Please enter your name.'); return; }
+  if (!email || !emailRegex.test(email)) { alert('Please enter a valid email address.'); return; }
+
+  const { pct, tier, ds, dc } = calcResults();
+
+  const dimSummary = dimDefs.map(d => {
+    const p = Math.round(ds[d.key] / (dc[d.key] * 4) * 100);
+    const lbl = p >= 65 ? 'Strong' : p >= 40 ? 'Building' : 'Needs Work';
+    return `${d.label}: ${lbl} (${p}%)`;
+  }).join('\n');
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Loading...';
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        _replyto: email,
+        tier: tier.name,
+        overall_score: pct + '%',
+        dimension_breakdown: dimSummary,
+        _subject: `New Quiz Result — ${tier.name} | ${name}`,
+      })
+    });
+
+    if (res.ok) {
+      showResults(tier, ds, dc);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Show Me My Results →';
+    document.getElementById('submit-error').style.display = 'block';
+  }
+}
+
+function getClass(p) { return p >= 65 ? 'strong' : p >= 40 ? 'building' : 'needs-work'; }
+function getLabel(p) { return p >= 65 ? 'Strong' : p >= 40 ? 'Building' : 'Needs Work'; }
+
+function showResults(tier, ds, dc) {
+  document.getElementById('res-tier').textContent = tier.name;
+  document.getElementById('res-desc').innerHTML = tier.desc;
+  document.getElementById('rec-text').textContent = tier.rec;
+
+  const dbEl = document.getElementById('dim-bars');
+  dbEl.innerHTML = '';
+  dimDefs.forEach(d => {
+    const p = Math.round(ds[d.key] / (dc[d.key] * 4) * 100);
+    const cls = getClass(p);
+    const lbl = getLabel(p);
+    const row = document.createElement('div');
+    row.className = 'dim-row';
+    row.innerHTML = `
+      <div class="dim-header">
+        <span class="dim-name">${d.label}</span>
+        <span class="dim-label-tag ${cls}">${lbl}</span>
+      </div>
+      <div class="dim-desc">${d.desc}</div>
+      <div class="dim-track"><div class="dim-fill ${cls}" data-target="${p}"></div></div>`;
+    dbEl.appendChild(row);
+  });
+
+  showScreen('screen-result');
+  setTimeout(() => {
+    document.querySelectorAll('.dim-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
+  }, 200);
+}
+
+function retakeQuiz() {
+  current = 0;
+  answers = new Array(TOTAL).fill(null);
+  shuffledOptions = [];
+  document.getElementById('input-name').value = '';
+  document.getElementById('input-email').value = '';
+  document.getElementById('btn-submit').disabled = false;
+  document.getElementById('btn-submit').textContent = 'Show Me My Results →';
+  document.getElementById('submit-error').style.display = 'none';
+  showScreen('screen-intro');
+}
+</script>
+</body>
+</html>
