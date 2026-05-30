@@ -191,10 +191,10 @@
 const ML_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYWE2YTdjOWU4NDZjYTZkYjIwYjVhN2RhYzM2OTBiYjJmYzllOGFiYmU2MmM3MjQ1ZTE1ZjMxZjg5NDZmZDZkNDUzZWUyMzRjZGJlOWViODciLCJpYXQiOjE3ODAxMzUyNzMuMzIxMTE2LCJuYmYiOjE3ODAxMzUyNzMuMzIxMTE5LCJleHAiOjQ5MzU4MDg4NzMuMzE2MDYzLCJzdWIiOiIyMzAyNTcwIiwic2NvcGVzIjpbXX0.SZF7VA0mST7TI9pWfaAVspOsojqLTANWL4JTKyfFu7ummZ_o_CDGQcZsSH1yAsz65j5H3RxPYIPsk_jJx9s12u5rKO6VdJWnzc9kA4Q87g4jL4mgWticLlXdcXHE7has2OFQyp1-NwT-FGtJmpYJQya2Gp_LmTTORT--gueRAJyzs1YFgzHb_D6iL-HuTw4AI3iKW6mMxTotlLtupkgXxP67ZxFXV29JM-HBbmbaMHBvjFfDA-sm0RdvhjEfY3UrlbOLoAlZ2-ycKvFyPcHkkhtZpJXrMei9lHHoHd-E3i3zqE8zuWLfOZWCb1snZpIblXdDPxz_MpLkNd4D7BGx9oa2uN1u4c_xqHIrGB0UUtJY_xA4Vv_Bn1roLGEoJuAllpbaaqCrO-gzYz7WVRG42JZhw9xv6G30WnD3eIPLpjSRQ5LZSFw7W3dog46G6NhhfuejzNYINAYbAFS8KbDKXMqkCQ49FMPpELI9od5Zn5KQQfsmHSXZCwmLzL_s1CStpXwxFp-IuyMBWPXlmVVd5C3KJpuEsdu0bihm910mcs5Yiam5celhzqu8rvgRjS0LUFZjjjOoLKeXPoZqnxSyaKDrOyL6Pdkicq2szpANDAMZKwkWI9NYOF9cELm8PIcdekUUJ_ONNAIFLgKFeMDZSYMCMmm7KXDsDes-WwpJZMI';
 
 const ML_GROUPS = {
-  'Unified':     '188885246569088243',
-  'Fragmenting': '188885214009754633',
-  'Fractured':   '188885224543749821',
-  'Contracting': '188885231655192026',
+  'Unified':     '188885214009754633',
+  'Fragmenting': '188885224543749821',
+  'Fractured':   '188885231655192026',
+  'Contracting': '188885246569088243',
   'Newsletter':  '185368372457768606',
 };
 
@@ -426,6 +426,36 @@ async function submitToMailerLite(name, email, tierName, subscribeNewsletter) {
   return response.json();
 }
 
+async function submitToFormspree(name, email, tier, pct, ds, dc) {
+  const dimSummary = dimDefs.map(d => {
+    const p = Math.round(ds[d.key] / (dc[d.key] * 4) * 100);
+    const lbl = p >= 65 ? 'Strong' : p >= 40 ? 'Building' : 'Needs Work';
+    return `${d.label}: ${lbl} (${p}%)`;
+  }).join('\n');
+
+  const tierDescriptions = {
+    'Unified': 'Fully integrated, operating from the strongest possible mental foundation.',
+    'Fragmenting': 'Capable and developing, but not yet consistent.',
+    'Fractured': 'Working hard, but the foundation needs attention.',
+    'Contracting': 'Protection mode is running the show.'
+  };
+
+  await fetch('https://formspree.io/f/mvzvjwqk', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      name,
+      email,
+      _replyto: email,
+      tier: tier,
+      tier_description: tierDescriptions[tier],
+      overall_score: pct + '%',
+      dimension_breakdown: dimSummary,
+      _subject: `New Quiz Result — ${tier} | ${name}`,
+    })
+  });
+}
+
 async function submitEmail() {
   const name = document.getElementById('input-name').value.trim();
   const email = document.getElementById('input-email').value.trim();
@@ -442,7 +472,11 @@ async function submitEmail() {
   btn.textContent = 'Loading...';
 
   try {
-    await submitToMailerLite(name, email, tier.name, subscribeNewsletter);
+    // Submit to both MailerLite and Formspree simultaneously
+    await Promise.all([
+      submitToMailerLite(name, email, tier.name, subscribeNewsletter),
+      submitToFormspree(name, email, tier.name, pct, ds, dc)
+    ]);
     showResults(tier, ds, dc);
   } catch(e) {
     btn.disabled = false;
