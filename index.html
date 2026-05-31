@@ -388,7 +388,7 @@ function calcResults() {
   return { pct, tier, ds, dc };
 }
 
-async function submitToMailerLite(name, email, tierName, subscribeNewsletter) {
+async function submitToMailerLite(name, email, tierName, subscribeNewsletter, pct, ds, dc) {
   // Build the groups array — always add the tier group, optionally add newsletter
   const groups = [ML_GROUPS[tierName]];
   if (subscribeNewsletter) groups.push(ML_GROUPS['Newsletter']);
@@ -397,11 +397,23 @@ async function submitToMailerLite(name, email, tierName, subscribeNewsletter) {
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ') || '';
 
+  // Calculate dimension labels
+  const getDimLabel = (key) => {
+    const p = Math.round(ds[key] / (dc[key] * 4) * 100);
+    return p >= 65 ? 'Strong' : p >= 40 ? 'Building' : 'Needs Work';
+  };
+
   const payload = {
     email: email,
     fields: {
       name: firstName,
       last_name: lastName,
+      score: pct + '%',
+      bounce_back: getDimLabel('bounce'),
+      self_worth: getDimLabel('selfworth'),
+      mistake_response: getDimLabel('mistake'),
+      pressure_detachment: getDimLabel('pressure'),
+      threat_response: getDimLabel('threat'),
     },
     groups: groups,
     status: 'active',
@@ -474,7 +486,7 @@ async function submitEmail() {
   try {
     // Submit to both MailerLite and Formspree simultaneously
     await Promise.all([
-      submitToMailerLite(name, email, tier.name, subscribeNewsletter),
+      submitToMailerLite(name, email, tier.name, subscribeNewsletter, pct, ds, dc),
       submitToFormspree(name, email, tier.name, pct, ds, dc)
     ]);
     showResults(tier, ds, dc);
